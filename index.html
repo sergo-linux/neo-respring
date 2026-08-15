@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NeoRespring</title>
+<meta name="description" id="metaDescription" content="NeoRespring — a one-button PWA that runs a Web Respring on your device.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" id="themeColorMeta" content="#0A0713">
+
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./assets/icons/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="./assets/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="./assets/icons/favicon-16.png">
+<link rel="icon" type="image/svg+xml" href="./assets/icons/logo.svg">
+<link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="NeoRespring">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="NeoRespring">
+<meta property="og:description" content="Web Respring in one tap. A featherweight PWA around neonmodder123's Web Respring page.">
+<meta property="og:image" content="./assets/icons/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://neonmodder123.github.io">
+<link rel="stylesheet" href="./assets/css/styles.css">
+
+<script>
+  /* Resolve the theme before first paint so the app never flashes the wrong one. */
+  (function () {
+    try {
+      var pref = localStorage.getItem('neorespring:theme') || 'auto';
+      var dark = pref === 'dark' || (pref === 'auto' &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches);
+      var root = document.documentElement;
+      root.dataset.theme = dark ? 'dark' : 'light';
+      root.dataset.themePref = pref;
+      var lang = localStorage.getItem('neorespring:lang');
+      if (!lang) {
+        var list = navigator.languages && navigator.languages.length
+          ? navigator.languages : [navigator.language || 'en'];
+        lang = list.some(function (l) { return /^ru\b/i.test(l); }) ? 'ru' : 'en';
+      }
+      root.lang = lang;
+    } catch (e) { /* private mode, storage blocked — defaults are fine */ }
+  })();
+</script>
+</head>
+
+<body>
+<svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="glyph" viewBox="0 0 1000 1000">
+    <path d="M712.132 287.868 A300 300 0 1 0 785.317 592.705"
+          fill="none" stroke="currentColor" stroke-width="96" stroke-linecap="round"/>
+    <path d="M821.781 480.480 L858.459 687.970 L670.149 626.784 Z" fill="currentColor"/>
+    <path d="M539.56 376.72 L433.76 522.08 L494.48 522.08 L460.44 623.28 L566.24 470.56 L501.84 470.56 Z"
+          fill="currentColor"/>
+  </symbol>
+  <symbol id="ico-auto" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="8.25" fill="none" stroke="currentColor" stroke-width="1.7"/>
+    <path d="M12 3.75a8.25 8.25 0 0 1 0 16.5z" fill="currentColor"/>
+  </symbol>
+  <symbol id="ico-sun" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="4.4" fill="currentColor"/>
+    <g stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <path d="M12 2.6v2.3M12 19.1v2.3M21.4 12h-2.3M4.9 12H2.6M18.6 5.4l-1.6 1.6M7 17l-1.6 1.6M18.6 18.6 17 17M7 7 5.4 5.4"/>
+    </g>
+  </symbol>
+  <symbol id="ico-moon" viewBox="0 0 24 24">
+    <path d="M20.4 14.6A8.6 8.6 0 0 1 9.4 3.6a8.7 8.7 0 1 0 11 11z" fill="currentColor"/>
+  </symbol>
+  <symbol id="ico-install" viewBox="0 0 24 24">
+    <g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3.6v10.6M8.2 10.6 12 14.4l3.8-3.8M4.6 16.2v2.1a2.1 2.1 0 0 0 2.1 2.1h10.6a2.1 2.1 0 0 0 2.1-2.1v-2.1"/>
+    </g>
+  </symbol>
+  <symbol id="ico-share" viewBox="0 0 24 24">
+    <g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 15.4V3.9M8.4 7.5 12 3.9l3.6 3.6M6 11.2h1.6M16.4 11.2H18a1.8 1.8 0 0 1 1.8 1.8v6.3a1.8 1.8 0 0 1-1.8 1.8H6a1.8 1.8 0 0 1-1.8-1.8V13A1.8 1.8 0 0 1 6 11.2"/>
+    </g>
+  </symbol>
+  <symbol id="ico-heart" viewBox="0 0 24 24">
+    <path d="M12 20.6s-7.9-4.7-7.9-10a4.6 4.6 0 0 1 7.9-3.2 4.6 4.6 0 0 1 7.9 3.2c0 5.3-7.9 10-7.9 10z" fill="currentColor"/>
+  </symbol>
+  <symbol id="ico-link" viewBox="0 0 24 24">
+    <g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M13.4 6.2h3.4a4.2 4.2 0 0 1 0 8.4h-3.4M10.6 14.6H7.2a4.2 4.2 0 0 1 0-8.4h3.4M8.6 10.4h6.8"/>
+    </g>
+  </symbol>
+</svg>
+
+<div class="aurora" aria-hidden="true">
+  <span class="aurora__blob aurora__blob--1"></span>
+  <span class="aurora__blob aurora__blob--2"></span>
+  <span class="aurora__blob aurora__blob--3"></span>
+  <span class="aurora__grid"></span>
+</div>
+
+<header class="topbar">
+  <a class="brand" href="./" aria-label="NeoRespring">
+    <span class="brand__mark"><svg viewBox="0 0 1000 1000" aria-hidden="true"><use href="#glyph"/></svg></span>
+    <span class="brand__name">Neo<span class="brand__name-accent">Respring</span></span>
+  </a>
+
+  <div class="topbar__tools">
+    <div class="seg" id="langSwitch" role="group" data-i18n-attr="aria-label:a11y.lang" aria-label="Language">
+      <span class="seg__thumb" aria-hidden="true"></span>
+      <button type="button" class="seg__btn" data-lang="ru" aria-pressed="false">RU</button>
+      <button type="button" class="seg__btn" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+
+    <button type="button" class="iconbtn" id="themeBtn" aria-label="Theme">
+      <svg class="iconbtn__ico iconbtn__ico--auto" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-auto"/></svg>
+      <svg class="iconbtn__ico iconbtn__ico--light" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-sun"/></svg>
+      <svg class="iconbtn__ico iconbtn__ico--dark" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-moon"/></svg>
+    </button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span><span data-i18n="hero.eyebrow">Web Respring · PWA</span></p>
+    <h1 class="hero__title" data-i18n="hero.title">Respring in a single tap</h1>
+    <p class="hero__lede" data-i18n="hero.lede">
+      NeoRespring is a featherweight one-button app. Press the button and the Web Respring page opens and does the rest.
+    </p>
+
+    <div class="launcher">
+      <div class="launcher__halo" aria-hidden="true"><i></i><i></i><i></i></div>
+      <button type="button" class="respring" id="respringBtn">
+        <span class="respring__ring" aria-hidden="true"></span>
+        <span class="respring__face">
+          <svg class="respring__glyph" viewBox="0 0 1000 1000" aria-hidden="true"><use href="#glyph"/></svg>
+          <span class="respring__label">Respring</span>
+        </span>
+      </button>
+    </div>
+
+    <p class="launcher__hint" data-i18n="hero.hint">Press to run a Web Respring</p>
+
+    <a class="destination" href="https://neonmodder123.github.io/respring" rel="noopener">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-link"/></svg>
+      <span><span data-i18n="hero.opens">Opens</span> <b>neonmodder123.github.io/respring</b></span>
+    </a>
+  </section>
+
+  <section class="panel" id="what">
+    <h2 class="panel__title" data-i18n="what.title">What is this?</h2>
+    <div class="prose">
+      <p data-i18n="what.p1">A respring restarts the device's interface shell. The screen goes dark for a couple of seconds and the UI comes back up — faster than a full reboot, because only the shell restarts, not the whole system.</p>
+      <p data-i18n="what.p2">A Web Respring does it straight from the browser: no tweaks and no extra apps to install. It is all handled by the page neonmodder123 built.</p>
+      <p data-i18n="what.p3">NeoRespring is a comfortable shell around that page: it installs to your home screen like a normal app, opens offline, and fires the Respring from one big button. The Respring itself is done by neonmodder123's page — all credit goes there.</p>
+    </div>
+
+    <div class="cards">
+      <article class="card">
+        <span class="card__num" aria-hidden="true">01</span>
+        <h3 data-i18n="cards.one.t">One button</h3>
+        <p data-i18n="cards.one.d">No menus, no settings. Open, press, Respring.</p>
+      </article>
+      <article class="card">
+        <span class="card__num" aria-hidden="true">02</span>
+        <h3 data-i18n="cards.two.t">Installs like an app</h3>
+        <p data-i18n="cards.two.d">A real PWA: home screen icon, full-screen launch, and an offline cache.</p>
+      </article>
+      <article class="card">
+        <span class="card__num" aria-hidden="true">03</span>
+        <h3 data-i18n="cards.three.t">Your language, your theme</h3>
+        <p data-i18n="cards.three.d">Russian or English, light or dark — picked up from your device, switchable by hand.</p>
+      </article>
+    </div>
+
+    <p class="note" data-i18n="what.note">
+      The Respring fires on devices the Web Respring page supports. Everywhere else the page simply opens and nothing breaks. NeoRespring is an unofficial client and is not affiliated with Apple.
+    </p>
+  </section>
+
+  <section class="panel thanks">
+    <span class="thanks__heart" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#ico-heart"/></svg></span>
+    <div class="thanks__body">
+      <h2 data-i18n="thanks.title">Thanks, neonmodder123</h2>
+      <p data-i18n="thanks.text">Web Respring is his work — NeoRespring only puts a nice button on top of it.</p>
+      <a class="btn btn--ghost" href="https://neonmodder123.github.io/respring" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-link"/></svg>
+        <span data-i18n="thanks.link">Open the original page</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="panel install" id="installPanel" hidden>
+    <div class="install__body">
+      <h2 data-i18n="install.title">Put it on your home screen</h2>
+      <p id="installText" data-i18n="install.text">Installed, NeoRespring opens full screen and works without a connection.</p>
+    </div>
+    <button type="button" class="btn btn--solid" id="installBtn" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-install"/></svg>
+      <span data-i18n="install.action">Install</span>
+    </button>
+    <p class="install__ios" id="installIos" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-share"/></svg>
+      <span data-i18n="install.ios">Share → Add to Home Screen</span>
+    </p>
+  </section>
+</main>
+
+<footer class="foot">
+  <p class="foot__line">
+    <span data-i18n="foot.thanks">Thanks to</span>
+    <a href="https://neonmodder123.github.io/respring" rel="noopener">neonmodder123</a>
+    <span data-i18n="foot.for">for Web Respring</span>
+    <svg class="foot__heart" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-heart"/></svg>
+  </p>
+  <p class="foot__meta"><span data-i18n="foot.unofficial">Unofficial client</span> · <span id="appVersion">v1.0.0</span></p>
+</footer>
+
+<div class="curtain" id="curtain" role="alertdialog" aria-modal="true" aria-live="assertive" aria-hidden="true" hidden>
+  <div class="curtain__inner">
+    <svg class="curtain__glyph" viewBox="0 0 1000 1000" aria-hidden="true"><use href="#glyph"/></svg>
+    <p class="curtain__text" id="curtainText" data-i18n="curtain.text">Respring…</p>
+    <div class="curtain__bar" aria-hidden="true"><i></i></div>
+    <a class="curtain__fallback" id="curtainFallback" href="https://neonmodder123.github.io/respring" rel="noopener" data-i18n="curtain.fallback">Nothing happened? Open manually</a>
+  </div>
+</div>
+
+<div class="toast" id="updateToast" hidden>
+  <span data-i18n="update.text">A new version is ready</span>
+  <button type="button" id="updateBtn" data-i18n="update.action">Refresh</button>
+</div>
+
+<script src="./assets/js/i18n.js"></script>
+<script src="./assets/js/app.js"></script>
+</body>
+</html>
